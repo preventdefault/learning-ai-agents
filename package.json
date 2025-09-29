@@ -1,0 +1,23 @@
+{
+  "name": "learning-ai-agents",
+  "version": "1.0.0",
+  "description": "AI agents still often look like magic to me. They act on their own, completing given tasks independently, and are becoming more and more reliable. With every passing week, their capabilities seem to increase without limit.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/preventdefault/learning-ai-agents.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/preventdefault/learning-ai-agents/issues"
+  },
+  "homepage": "https://github.com/preventdefault/learning-ai-agents#readme",
+  "volta": {
+    "node": "24.9.0"
+  }
+}
