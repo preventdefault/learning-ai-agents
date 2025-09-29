@@ -1,6 +1,6 @@
-import { process } from "node:process";
+import { argv } from "node:process";
 
-const prompt = process.argv.at(2);
+const prompt = argv.at(2);
 
 const response = await fetch("http://localhost:1234/v1/chat/completions", {
   method: "POST",
