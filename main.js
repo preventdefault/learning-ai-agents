@@ -1,4 +1,5 @@
 import { argv } from "node:process";
+import { removeThinkingContent } from "./utils.js";
 
 const prompt = argv.at(2);
 
@@ -20,4 +21,7 @@ const response = await fetch("http://localhost:1234/v1/chat/completions", {
 
 const { choices: [{ message }] } = await response.json();
 
-console.log(message);
+// Remove thinking content from the message before displaying
+const cleanedContent = removeThinkingContent(message.content);
+
+console.log(cleanedContent);
