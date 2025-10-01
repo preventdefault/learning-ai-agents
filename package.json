@@ -2,11 +2,11 @@
   "name": "learning-ai-agents",
   "version": "1.0.0",
   "description": "Learning about AI Agents by building one from scratch.",
-  "main": "main.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node main.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",

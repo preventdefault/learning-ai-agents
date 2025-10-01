@@ -12,30 +12,48 @@
 
 ## Tasks
 
-- Always make a plan before starting implementation
-- Strictly follow the tasks
-- Avoid making assumptions about purpose or intent
-- Do not add steps not listed in a task
+Provides a collection of tasks the user can request.
 
-### Run Project Setup
+- Plan before starting implementation.
+- Strictly follow the tasks.
+- Avoid making assumptions about purpose or intent.
+- Do not add steps not listed in a task.
 
-1. Run `npm init --yes`
-2. In `package.json`, set `main` to `main.js` and `type` to `module`
-3. Add an npm start script `node main.js`
-4. Add the dev dependency `@types/node`
-5. Run `npm install`
-6. Create an empty `main.js` file
+### Create Project
 
-### Create Memory Implementation
+1. Run `npm init --yes`.
+2. In `package.json`:
+    - Set `main` to `index.js`.
+    - Set `type` to `module`.
+    - Add an npm start script: `node main.js`.
+    - Add `@types/node` as a dev dependency.
+3. Run `npm install`.
 
-The memory implementation is based on a local JSON file that holds the full history of a conversation.
+### Create Memory
 
-1. Create an empty `memory.js` file
-2. Create a `memory.json` file that contains an empty array
-3. Create and expose a function `append` that puts its argument at the end of the array in the `memory.json` file
-4. Create and expose a function `getAll` that returns the parsed content of `memory.json`
-5. Create and expose a function `reset` that resets the contents of `memory.json`
+The memory implementation uses a local JSON file to store the full conversation history.
+
+1. In `memory.js`:
+    - Create and export an `append` function that adds its argument to the end of the array in `memory.json`.
+    - Create and export a `getAll` function that returns the parsed content of `memory.json`.
+    - Create and export a `reset` function that clears the contents of `memory.json`.
+    - Ensure `getAll` checks for the existence of `memory.json`.
+2. Create `memory.json` containing an empty array.
 
 **Notes**:
 
-- For simplicity, prefer synchronous functions
+- For simplicity, prefer synchronous functions.
+
+### Create LLM Fetch Function
+
+In `fetch-llm.js`, expose a function that:
+  - Has an object parameter `{ model, messages }`.
+  - Makes a `POST` request (`application/json`) to `http://localhost:1234/v1/chat/completions`.
+  - Returns the JSON response.
+
+### Create Index File
+
+In `index.js`:
+  - Get the second command-line argument from the `argv` array; it acts as the user prompt.
+  - Take this prompt and append it to memory as `{ role: "user", prompt: prompt }`.
+  - Fetch the LLM with the complete memory as the `messages` parameter and with the model parameter `http://localhost:1234/v1/chat/completions`.
