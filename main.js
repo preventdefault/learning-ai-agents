@@ -19,7 +19,9 @@ const response = await fetch("http://localhost:1234/v1/chat/completions", {
   },
 });
 
-const { choices: [{ message }] } = await response.json();
+const {
+  choices: [{ message }],
+} = await response.json();
 
 // Remove thinking content from the message before displaying
 const cleanedContent = removeThinkingContent(message.content);

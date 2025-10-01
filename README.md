@@ -51,6 +51,20 @@ Run `npm start "<your prompt>"`. The prompt will be used as the user message.
 
 ## Memory
 
+LLMs are stateless - they processes each query independently with no memory of past interactions. Every conversation starts from scratch.
+
+Memory in AI Agents is not as simple as it is for humans. LLMs have limited context windows - they can only consider a fixed amount of text at a time.
+
+If you simply add the entire conversation history every time, you quickly hit these limits. The model might start ignoring older content or lose coherence if the context is too long. Moreover, storing everything slows down processing and increases costs.
+
+The challenge is clear: how to keep important information without overloading the system.
+
+### Main Types of Memory
+
+#### Short-Term Memory (Contextual Memory)
+
+#### Long-Term Memory (Persistent Memory)
+
 ## Tool Call
 
 ## The Loop
