@@ -71,6 +71,8 @@ This is information the AI Agent keeps across sessions and over time. It's often
 
 ### Memory Strategies
 
+In this project, the Sequential strategy is used because it is the simplest one.
+
 #### Sequential
 
 The most basic method is what early chatbots did: keep adding every new message to the conversation history, and feed the whole thing to the model each time. This sequential memory chain keeps the full conversation record. It's like carrying the entire transcript of a conversation as context.
@@ -95,7 +97,7 @@ The quality of this approach depends on the quality of the summaries. Important 
 
 #### Retrieval Based
 
-This advanced approach gives the AI agent something like an external brain or a personal search engine. 
+This advanced approach gives the AI agent something like an external brain or a personal search engine.
 Instead of pushing a fixed window or a summary into the model, the conversation history is stored in an external database, and when needed, the agent retrieves the most relevant pieces to include in context.
 
 Retrieval-based memory allows an agent to remember large amounts of information over long periods. The agent can surface details from much earlier in a conversation or from long-term knowledge even if the current context window is small.
