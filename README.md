@@ -15,9 +15,9 @@ This is where the journey begins.
 - [Setup](#setup)
 - [Usage](#usage)
 - [Memory](#memory)
-- [Tool Call](#tool-call)
-- [The Loop](#the-loop)
+- [Tool Calling](#tool-calling)
 - [Evaluations](#evaluations)
+- [AGENTS.md](#agentsmd)
 
 ## Introduction
 
@@ -47,7 +47,7 @@ It is small (around 2 GB), so it should run on most modern consumer hardware.
 
 ## Usage
 
-Run `npm start "<your prompt>"`. The prompt will be used as the user message.
+Run `node index.js "<your prompt>"`. The prompt will be used as the user message.
 
 ## Memory
 
@@ -63,11 +63,11 @@ The challenge is clear: how to keep important information without overloading th
 
 #### Short-Term Memory (Contextual Memory)
 
-This is the AI's context within a single session. That might be the chat history, or the results of tool calls. It contains all information about the current conversation, but they get thrown away once the session ends.
+This is the AI's context within a single session. That might be the chat history, or the results of tool calls. It contains all information about the current conversation, which is discarded once the session ends.
 
 #### Long-Term Memory (Persistent Memory)
 
-This is information the AI Agent keeps across sessions and over time. It's often stored in external databases so the Agent can look it up when needed.
+This is information the AI agent keeps across sessions and over time. It's often stored in external databases so the agent can look it up when needed.
 
 ### Memory Strategies
 
@@ -81,7 +81,7 @@ The benefit is simplicity – nothing fancy, just raw memory of everything said.
 
 #### Sliding Window
 
-Instead of keeping the entire history, the Agent keeps only the most recent N messages as context. As new messages come in, the oldest ones get dropped – the window slides forward.
+Instead of keeping the entire history, the agent keeps only the most recent N messages as context. As new messages come in, the oldest ones get dropped – the window slides forward.
 
 This approach ensures the context stays within a manageable size. It keeps the conversation relevant and recent, which is often enough since recent dialogue usually guides the next response. Performance stays consistent no matter how long the overall conversation.
 
@@ -102,10 +102,105 @@ Instead of pushing a fixed window or a summary into the model, the conversation 
 
 Retrieval-based memory allows an agent to remember large amounts of information over long periods. The agent can surface details from much earlier in a conversation or from long-term knowledge even if the current context window is small.
 
-The complexity of setup and maintenance is higher. You need systems to store information, algorithms for fast search, and careful tuning to ensure relevant information is retrieved. If the retrieval isn't accurate, the agent might behave not optimal.
+The complexity of setup and maintenance is higher. You need systems to store information, algorithms for fast search, and careful tuning to ensure relevant information is retrieved. If the retrieval isn't accurate, the agent might not behave optimally.
 
-## Tool Call
+## Tool Calling
 
-## The Loop
+### Converting Natural Language into Structured Tool Calls
+
+A fundamental design pattern in the development of intelligent agents involves the **conversion of natural language into structured tool calls**.  
+This approach enables agents to both **reason about complex tasks** and **execute actions** in a controlled and interpretable manner.
+
+### The Role and Limitations of LLMs
+
+Large Language Models (LLMs) are inherently **text-processing systems**. They operate solely on textual input and output, without direct interaction with their execution environment.  
+Consequently, an LLM **cannot independently**:
+
+- send HTTP requests,
+- access or read files,
+- execute command-line operations,
+- run arbitrary code, or
+- perform any other form of external computation.
+
+> **Note:**  
+> The model itself does **not** execute tool calls.  
+> Instead, it produces **structured textual representations** of those calls, which must be **interpreted and executed programmatically** by an external system.  
+> This mechanism ensures that the LLM remains a reasoning component, while the surrounding system manages actual execution.
+
+In this context, **tools and functions serve as controlled extensions** of the model’s capabilities, allowing it to interact with the external environment in a structured and auditable way.
+
+### Operational Process
+
+The integration of tools with an LLM typically follows the sequence below:
+
+1. **Tool Definition**  
+    The system provides the model with detailed descriptions of available tools, including their purpose, input parameters, and invocation rules.
+    
+2. **Reasoning and Invocation**  
+    Based on the user’s request, the model determines whether invoking a tool is necessary to complete the task.
+    
+3. **Tool Execution**  
+    If tool usage is required, the model generates a structured function call adhering to the predefined schema.  
+    The external system parses this output, executes the corresponding function, and returns the results to the model.
+    
+4. **Response Composition**  
+    The model incorporates the tool output into its reasoning process to produce a final, contextually informed response.
+    
+### Integration Methods
+
+Tools can be supplied to the model using one of two standard methods:
+
+#### 1. Via the `tools` Parameter in the Request Body
+
+```json 
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "your_function_name",
+      "description": "Description of the function’s purpose.",
+      "parameters": {
+        "type": "object",
+        "properties": {           
+          "tool_parameter": {             
+            "type": "string"           
+          }
+        },
+        "required": ["tool_parameter"]
+      }
+    }  
+  }
+]
+```
+
+#### 2. Embedded within the `system` Prompt
+
+```
+<|im_start|>system 
+....
+
+# Tools  
+
+You may call one or more functions to assist with the user query.  Function signatures are provided within <tools></tools> XML tags: 
+
+<tools> 
+{"type": "function", "function": {"name": "your_function_name", "description": "Description of the function’s purpose.", "parameters": {"type": "object", "properties": {"tool_parameter": {"type": "string"}}, "required": ["tool_parameter"]}}} 
+</tools>  
+
+For each function call, return a JSON object specifying the function name and its arguments within <tool_call></tool_call> XML tags: 
+<tool_call> 
+{"name": "<function-name>", "arguments": <args-json-object>} 
+</tool_call><|im_end|>
+```
+### Summary
+
+The conversion of natural language into structured tool calls represents a critical mechanism for extending the functional boundaries of LLMs.  
+By clearly separating **reasoning (handled by the model)** from **execution (managed by the system)**, this approach ensures **robustness, security, and transparency** in agent behavior.  
+It forms the foundation for modern LLM-based systems that can both **comprehend intent** and **take meaningful, reliable action**.
+
 
 ## Evaluations
+
+## AGENTS.md
+
+The AGENTS.md file provides a step-by-step guide for creating an AI agent that is being used in workshops I give to others.
