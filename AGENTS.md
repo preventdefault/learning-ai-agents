@@ -25,13 +25,13 @@ This document provides a collection of tasks that the user can request.
 
 ### Task 1: Check Requirements
 
-1. Verify `Node.js` version 24 is installed.
+1. Verify Node.js v24 is installed.
 2. Verify whether the connection to the LLM is available by running a `curl` command with the following parameters:
   - URL: http://localhost:1234/v1/chat/completions
-  - Content Type: application/json
+  - Content-Type: application/json
   - Body:
     - model: qwen/qwen3-4b-thinking-2507
-    - messages: An Array with an object with `role` equals `user` and `content` equals `Hi there!`.
+    - messages: an array containing an object with `role` set to `user` and `content` set to `Hi there!`.
 
 ### Task 2: Parse User Input
 
@@ -46,12 +46,12 @@ In `index.js`:
 
 1. In `fetch-llm.js`, expose a function that:
    - Has an object parameter `{ model, messages }`.
-   - Sends a `POST` request (`application/json`) to `http://localhost:1234/v1/chat/completions` with only the provided parameters in the request body.
+   - Sends a `POST` request (`application/json`) to `http://localhost:1234/v1/chat/completions` with only these parameters in the request body.
    - Returns the JSON response.
 
 2. Use it in `index.js` with:
    - `qwen/qwen3-4b-thinking-2507` as the model parameter.
-   - Take the user input and add it to the `messages` parameter `[{"role":"user","content":<user input>}]`.
+   - Include the user input in the `messages` parameter as `[{"role":"user","content":<user input>}]`.
    - Send the request.
    - Print the result of `response.choices[0].message.content`.
 
@@ -71,7 +71,7 @@ The memory implementation uses a local JSON file to store the full conversation 
 2. Create `memory.json` containing an empty array.
 3. Use it in `index.js`:
    - Append the current message to memory.
-   - Send the whole memory content as messages.
+   - Send the entire memory content as `messages`.
    - Append the original (raw) response message to memory.
 
 ### Task 6: Flush Memory
@@ -94,7 +94,7 @@ In `file_reader_tool.js`:
     - Implement the file reader tool.
 2. In `index.js`:
     - Integrate the run tools function.
-    - Make sure the integration supports nested tool calls in one conversation by checking the `length` of the `tool_calls` array.
+    - Ensure the integration supports nested tool calls within one conversation by checking the `tool_calls` array `length`.
 
 ### Task 9: Create Calculator Tool
 
@@ -102,7 +102,7 @@ In `calculator_tool.js`:
   - Expose a JSON schema object as named export for a function tool named `calculator` that multiplies, subtracts, adds, or divides two numbers. The tool accepts three required parameters:
     - `num_a` (number): The first number.
     - `num_b` (number): The second number.
-    - `operation` (string): Math operation to apply to both numbers. Must be one of: "add", "subtract", "multiply", or "divide".
+    - `operation` (string): The math operation to apply to both numbers. Must be one of: "add", "subtract", "multiply", or "divide".
   - Extend `fetchLLM` function with a required `tools` parameter and append it to the request body.
   - Pass the JSON schema to `fetchLLM` in `index.js`.
   - Expose a function that performs calculations according to the JSON schema specifications.
@@ -131,10 +131,16 @@ In `tool-match-scorer.js`:
   - output: The output of an LLM with the following structure: output.choices[{message:{tool_calls:[{function:{name:"<tool-name>"}}]}}]. All fields are optional.
   - expected: The name of the expected tool call.
 - Implement the function body with the following behavior:
-  - If the `tool_calls` property is not an array, return:
+  - If the `tool_calls` property is not an array or it is empty, return:
     - name: "tool-match".
     - score: 0.
-  - Checks if any tool call's `function.name` matches `expected`. Return:
+  - Check whether any tool call’s `function.name` matches `expected`. Return:
     - name: "tool-match".
     - score: 1 if there is a match; otherwise 0.
+
+### Task 12: Create Tool-Match Eval Runner
+
+In `run-tool-match-eval.js`:
+- Implement an evaluation runner for tool matches.
+- Add data cases that should not use tools.
   

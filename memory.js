@@ -1,26 +1,28 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { readFile, writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
 
-const MEMORY_FILE = "memory.json";
+const MEMORY_PATH = resolve("memory.json");
 
-export function append(item) {
-  const memory = getAll();
-  memory.push(item);
-  writeFileSync(MEMORY_FILE, JSON.stringify(memory, null, 2));
-}
-
-export function getAll() {
-  if (!existsSync(MEMORY_FILE)) {
+export async function getAll() {
+  if (!existsSync(MEMORY_PATH)) {
     return [];
   }
-  const content = readFileSync(MEMORY_FILE, "utf-8");
-  if (content.trim() === "") {
+  const content = await readFile(MEMORY_PATH, "utf-8");
+  try {
+    return JSON.parse(content);
+  } catch {
     return [];
   }
-  return JSON.parse(content);
 }
 
-export function reset() {
-  writeFileSync(MEMORY_FILE, JSON.stringify([], null, 2));
+export async function append(message) {
+  const messages = await getAll();
+  messages.push(message);
+  await writeFile(MEMORY_PATH, JSON.stringify(messages, null, 2));
 }
 
+export async function flush() {
+  await writeFile(MEMORY_PATH, JSON.stringify([], null, 2));
+}
 

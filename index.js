@@ -1,30 +1,36 @@
-import { argv, exit } from "node:process";
-import { removeThinkingContent } from "./utils.js";
-import { append, getAll } from "./memory.js";
+import { argv } from "node:process";
 import { fetchLLM } from "./fetch-llm.js";
+import { removeThinkTags } from "./format-message.js";
+import { append, getAll } from "./memory.js";
+import { READ_FILE_TOOL } from "./file_reader_tool.js";
+import { CALCULATOR_TOOL } from "./calculator_tool.js";
+import { runTools } from "./run-tools.js";
 
-async function main() {
-  const prompt = argv.at(2);
+const userPrompt = argv[2];
+console.log(userPrompt);
 
-  append({ role: "user", content: prompt });
-  const memory = getAll();
+const userMessage = { role: "user", content: userPrompt };
+await append(userMessage);
 
+while (true) {
+  const messages = await getAll();
   const response = await fetchLLM({
-    model: "qwen3-4b-thinking-2507",
-    messages: memory,
+    model: "qwen/qwen3-4b-thinking-2507",
+    messages,
+    tools: [READ_FILE_TOOL, CALCULATOR_TOOL],
   });
 
-  const {
-    choices: [{ message }],
-  } = response;
+  const responseMessage = response.choices[0].message;
+  await append(responseMessage);
 
-  const cleanedContent = removeThinkingContent(message.content);
-
-  console.log(cleanedContent);
+  if (responseMessage.tool_calls && responseMessage.tool_calls.length > 0) {
+    console.log("Tool calls:", JSON.stringify(responseMessage.tool_calls, null, 2));
+    const toolResults = await runTools(responseMessage.tool_calls);
+    for (const result of toolResults) {
+      await append(result);
+    }
+  } else {
+    console.log(removeThinkTags(responseMessage.content));
+    break;
+  }
 }
-
-main().catch((error) => {
-  console.error(error);
-  exit(1);
-});
-
