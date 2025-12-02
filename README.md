@@ -201,6 +201,22 @@ It forms the foundation for modern LLM-based systems that can both **comprehend 
 
 ## Evaluations
 
+Unlike traditional software, AI models are non-deterministic. They don’t always give the same output for the same input, which can make your usual unit tests insufficient for knowing if a change actually made things better.
+
+To know if your AI application really works for a specific use case, you need your own AI evals. Instead of spending hours “vibe testing” every time you try a new model or tweak a prompt, evals give you clearer metrics to help understand what’s actually better.
+
+**We cannot unit test an Agent.**
+
+Unlike traditional software, AI models are non-deterministic. Engineers can waste time seeking binary correctness in probabilistic systems, but "correctness" is fluid in creative tasks. A prompt like "summarize this email" has infinite valid outputs. If we mock the LLM, we aren't testing the agent; we are merely testing string concatenation.
+
+**We must evaluate behavior.**
+
+To succeed, we must replace manual "vibe testing" with systematic AI evals. We are managing risk, not eliminating variance. Therefore, our metrics must validate three specific areas:
+
+- **Reliability:** We don't ask if it worked once; we measure how often it works consistently.
+- **Quality:** We quantify the subjective: Is the answer helpful, accurate, and tonal, correct?
+- **Tracing:** We validate the reasoning path, ensuring the agent accessed the right context before answering.
+
 ## AGENTS.md
 
 The AGENTS.md file provides a step-by-step guide for creating an AI agent that is being used in workshops I give to others.
