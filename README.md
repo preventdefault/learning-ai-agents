@@ -79,7 +79,7 @@ The most basic method is what early chatbots did: keep adding every new message 
 
 The benefit is simplicity – nothing fancy, just raw memory of everything said. In short conversations, this works fine and ensures no detail is lost. However, as conversations grow, this approach runs into trouble. The context can quickly overflow the model's limit, or become so large that processing it is slow and expensive.
 
-<img src="./images/sequential-memory.png" alt="Sequential Memory" />
+<img src="./images/sequential-memory.jpg" alt="Sequential Memory" />
 
 #### Sliding Window
 
@@ -89,7 +89,7 @@ This approach ensures the context stays within a manageable size. It keeps the c
 
 But the agent might "forget" important information from earlier in the conversation. If a crucial detail was mentioned 50 messages ago and falls out of the window, it won't remember it.
 
-<img src="./images/sliding-window-memory.png" alt="Sliding Window Memory" />
+<img src="./images/sliding-window-memory.jpg" alt="Sliding Window Memory" />
 
 #### Summarization
 
@@ -99,7 +99,7 @@ It allows the AI to keep relevant information over very long conversations witho
 
 The quality of this approach depends on the quality of the summaries. Important details can be lost – a summary might miss a seemingly minor detail that later turns out to be crucial.
 
-<img src="./images/summary-memory.png" alt="Summary Memory" />
+<img src="./images/summary-memory.jpg" alt="Summary Memory" />
 
 #### Retrieval Based
 
@@ -110,7 +110,7 @@ Retrieval-based memory allows an agent to remember large amounts of information 
 
 The complexity of setup and maintenance is higher. You need systems to store information, algorithms for fast search, and careful tuning to ensure relevant information is retrieved. If the retrieval isn't accurate, the agent might not behave optimally.
 
-<img src="./images/retrieval-based-memory.png" alt="Retrieval Based Memory" />
+<img src="./images/retrieval-based-memory.jpg" alt="Retrieval Based Memory" />
 
 ## Tool Calling
 
@@ -206,7 +206,7 @@ The conversion of natural language into structured tool calls represents a criti
 By clearly separating **reasoning (handled by the model)** from **execution (managed by the system)**, this approach ensures **robustness, security, and transparency** in agent behavior.  
 It forms the foundation for modern LLM-based systems that can both **comprehend intent** and **take meaningful, reliable action**.
 
-<img src="./images/tool-calling.png" alt="Tool Calling" />
+<img src="./images/tool-calling.jpg" alt="Tool Calling" />
 
 ## Evaluations
 
