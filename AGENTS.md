@@ -13,6 +13,9 @@ The purpose of this file is to provide a step-by-step guide to creating an AI ag
 - Native Node.js imports should be prefixed with `node:`. For example, `import { argv } from "node:process"`.
 - Use shorthand property names.
 - Use an object parameter for functions with more than one parameter.
+- Prefer named exports over default exports.
+- Use camelCase for variable names.
+- Use dash-case for file names.
 
 ## Tasks
 
@@ -38,7 +41,7 @@ This document provides a collection of tasks that the user can request.
 In `index.js`:
   - Retrieve the second command-line argument from the `argv` array; it acts as the user prompt.
   - Print it out.
-  - Test it by running `node index.js "Hey there!"`.
+  - Test it by running `node index.js "Hey there."`.
 
 ### Task 3: Create LLM Fetch Function
 
@@ -81,8 +84,8 @@ The memory implementation uses a local JSON file to store the full conversation 
 
 ### Task 7: Create File Reader Tool
 
-In `file_reader_tool.js`:
-  - Expose a JSON schema object as named export for a function tool named `read_file` that reads and extracts content from various file types. The tool accepts a required parameter `file_path` (string) representing the path or identifier of the file to read, which must match the exact filename as provided by the user or system.
+In `file-reader-tool.js`:
+  - Expose a JSON schema object as named export for a function tool named `readFile` that reads and extracts content from various file types. The tool accepts a required parameter `filePath` (string) representing the path or identifier of the file to read, which must match the exact filename as provided by the user or system.
   - Extend `fetchLLM` function with a required `tools` parameter and append it to the request body.
   - Pass the JSON schema to `fetchLLM` in `index.js`.
   - Expose a function that reads a given file according to the JSON schema specifications.
@@ -98,10 +101,10 @@ In `file_reader_tool.js`:
 
 ### Task 9: Create Calculator Tool
 
-In `calculator_tool.js`:
+In `calculator-tool.js`:
   - Expose a JSON schema object as named export for a function tool named `calculator` that multiplies, subtracts, adds, or divides two numbers. The tool accepts three required parameters:
-    - `num_a` (number): The first number.
-    - `num_b` (number): The second number.
+    - `numA` (number): The first number.
+    - `numB` (number): The second number.
     - `operation` (string): The math operation to apply to both numbers. Must be one of: "add", "subtract", "multiply", or "divide".
   - Extend `fetchLLM` function with a required `tools` parameter and append it to the request body.
   - Pass the JSON schema to `fetchLLM` in `index.js`.
