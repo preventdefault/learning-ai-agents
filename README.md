@@ -79,6 +79,8 @@ The most basic method is what early chatbots did: keep adding every new message 
 
 The benefit is simplicity – nothing fancy, just raw memory of everything said. In short conversations, this works fine and ensures no detail is lost. However, as conversations grow, this approach runs into trouble. The context can quickly overflow the model's limit, or become so large that processing it is slow and expensive.
 
+<img src="./images/sequential-memory.png" alt="Sequential Memory" />
+
 #### Sliding Window
 
 Instead of keeping the entire history, the agent keeps only the most recent N messages as context. As new messages come in, the oldest ones get dropped – the window slides forward.
@@ -86,6 +88,8 @@ Instead of keeping the entire history, the agent keeps only the most recent N me
 This approach ensures the context stays within a manageable size. It keeps the conversation relevant and recent, which is often enough since recent dialogue usually guides the next response. Performance stays consistent no matter how long the overall conversation.
 
 But the agent might "forget" important information from earlier in the conversation. If a crucial detail was mentioned 50 messages ago and falls out of the window, it won't remember it.
+
+<img src="./images/sliding-window-memory.png" alt="Sliding Window Memory" />
 
 #### Summarization
 
@@ -95,6 +99,8 @@ It allows the AI to keep relevant information over very long conversations witho
 
 The quality of this approach depends on the quality of the summaries. Important details can be lost – a summary might miss a seemingly minor detail that later turns out to be crucial.
 
+<img src="./images/summary-memory.png" alt="Summary Memory" />
+
 #### Retrieval Based
 
 This advanced approach gives the AI agent something like an external brain or a personal search engine.
@@ -103,6 +109,8 @@ Instead of pushing a fixed window or a summary into the model, the conversation 
 Retrieval-based memory allows an agent to remember large amounts of information over long periods. The agent can surface details from much earlier in a conversation or from long-term knowledge even if the current context window is small.
 
 The complexity of setup and maintenance is higher. You need systems to store information, algorithms for fast search, and careful tuning to ensure relevant information is retrieved. If the retrieval isn't accurate, the agent might not behave optimally.
+
+<img src="./images/retrieval-based-memory.png" alt="Retrieval Based Memory" />
 
 ## Tool Calling
 
@@ -198,6 +206,7 @@ The conversion of natural language into structured tool calls represents a criti
 By clearly separating **reasoning (handled by the model)** from **execution (managed by the system)**, this approach ensures **robustness, security, and transparency** in agent behavior.  
 It forms the foundation for modern LLM-based systems that can both **comprehend intent** and **take meaningful, reliable action**.
 
+<img src="./images/tool-calling.png" alt="Tool Calling" />
 
 ## Evaluations
 
